@@ -1,22 +1,16 @@
 const reviewModel = require("../models/reviewModel");
 const planModel = require("../models/planModel");
 const userModel = require("../models/userModel");
+const {paginatedResults} = require("../utility/paginate")
 
 
+//make it paginated
 async function getAllReviews(req, res) {
   try {
     console.log('inside getallreviews')
-    let reviews = await reviewModel.find({});
-    if (reviews) {
-      return res.json({
-        message: "All reviews",
-        data: reviews,
-      });
-    } else {
-      return res.json({
-        message: "No review found",
-      });
-    }
+    
+    res.json(res.paginatedResults)    
+    
   } catch (err) {
     res.status(500).json({
       message: err.message,

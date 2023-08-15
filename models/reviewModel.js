@@ -41,7 +41,6 @@ const reviewSchema = new mongoose.Schema({
 
 // find, findById, findOne
 reviewSchema.pre(/^find/, function (next) {
-  console.log("yy")
   this.populate({
     path: "user",
     select: "name profilePicture",

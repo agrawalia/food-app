@@ -1,9 +1,9 @@
 const express = require("express");
 const app = express();
 const reviewRouter = express.Router();
-
+const reviewModel = require("../models/reviewModel");
 const { isAuthorised, protectRoute } = require("../controller/authController");
-
+const {paginatedResults} = require("../utility/paginate")
 const {
   getAllReviews,
   top3Reviews,
@@ -13,7 +13,7 @@ const {
   deleteReview,
 } = require("../controller/reviewController");
 
-reviewRouter.route("/all").get(getAllReviews);
+reviewRouter.route("/all").get(paginatedResults(reviewModel), getAllReviews);
 
 reviewRouter.route("/top3reviews").get(top3Reviews);
 
