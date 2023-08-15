@@ -1,11 +1,12 @@
 const express = require("express");
 const app = express();
-
+const multer = require("multer");
 const {
   getUser,
   deleteUser,
   updateUser,
   getAllUser,
+  updateProfileImage,
 } = require("../controller/userController");
 
 const {
@@ -37,12 +38,39 @@ userRouter.route("/forgetpassword").post(forgetPassword);
 
 userRouter.route("/resetpassword/:token").post(resetPassword);
 
-userRouter.route("/logout").get(logout);
+const multerStorage = multer.diskStorage({
+  destination: function(req, file, cb){
+    cb(null,'public/images');
+  },
+  filename: function(req, file, cb){
+    cb(null, `user-${Date.now()}.jpeg`)
+  }
+});
 
+const filter = function(req, file, cb) {
+  if(file.mimetype.startsWith("image")) {
+    cb(null, true);
+  } else {
+    cb(new Error("Not an image! Please upload an image "))
+  }
+}
+
+//multer for file upload
+const upload = multer({
+  storage:multerStorage,
+  fileFilter:filter
+})
+
+//update profile image
+userRouter.post("/ProfileImage", upload.single('photo'), updateProfileImage)
+userRouter.get('/ProfileImage', (req, res)=>{
+  res.sendFile('/Users/ishan/workspace/test/views/multer.html')
+})
+
+userRouter.route("/logout").get(logout);
 //Profile page
 userRouter.use(protectRoute); //Check if user is signed in
 userRouter.route("/userProfile").get(getUser);
-
 
 //admin specific func
 userRouter.use(isAuthorised(["admin"]));

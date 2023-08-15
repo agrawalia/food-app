@@ -10,4 +10,3 @@ bookingRouter.get('/createSession', function(req, res) {
 })
 
 module.exports=bookingRouter;
-

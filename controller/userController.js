@@ -87,9 +87,16 @@ async function getAllUser(req, res) {
   }
 }
 
+async function updateProfileImage(req, res) {
+  res.json({
+    message: 'file uploaded successfully',
+  })
+}
+
 module.exports = {
   getUser,
   updateUser,
   deleteUser,
   getAllUser,
+  updateProfileImage,
 };
